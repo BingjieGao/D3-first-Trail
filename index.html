@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>COMP6214 Open Data Innovation CourseWork 1</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link href="css/grayscale.css" rel="stylesheet">
+
+    <!-- Custom Fonts -->
+    <link href="font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <link href="http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic" rel="stylesheet" type="text/css">
+    <link href="http://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" type="text/css" href="./css/page.css">
+
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+	<link rel="stylesheet" type="text/css" href="./css/nv.d3.css" />
+        <script src="./js/d3/d3.js"></script>
+        <script src="http://d3js.org/d3.v3.min.js"></script>
+        <script src="./js/nv.d3.js"></script>
+        <script src="http://labratrevenge.com/d3-tip/javascripts/d3.tip.v0.6.3.js"></script>
+        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js">></script>
+        <script src="http://code.jquery.com/jquery-latest.min.js"></script>
+    <style>
+
+         #visual{
+            color:#204DFF;
+        }
+	    .nvtooltip {
+
+		  background-color: #989898;
+		  color:teal;
+		
+		}
+
+        .axis path,
+        .axis line {
+          fill: none;
+          stroke: #000;
+          shape-rendering: crispEdges;
+        }
+
+        .bar {
+          fill: teal;
+          opacity: 0.5;
+        }
+
+        .bar:hover {
+          fill: lightblue;
+          opacity: 1;
+        }
+        .dot{
+            opacity: 0.35;
+        }
+        .dot:hover{
+            opacity: 1;
+        }
+        .x.axis path {
+          display: none;
+        }
+
+        .d3-tip {
+          line-height: 1;
+          font-weight: bold;
+          padding: 12px;
+          background-color: #E5F9FE;
+          color: #079DD6;
+          border-radius: 20px;
+          border: 2px solid #a1a1a1;
+        }
+
+        /* Creates a small triangle extender for the tooltip */
+        .d3-tip:after {
+          box-sizing: border-box;
+          display: inline;
+          font-size: 10px;
+          width: 100%;
+          line-height: 1;
+          color: rgba(0, 0, 0, 0.8);
+          content: "\25BC";
+          position: absolute;
+          text-align: center;
+        }
+
+        /* Style northward tooltips differently */
+        .d3-tip.n:after {
+          margin: -1px 0 0 0;
+          top: 100%;
+          left: 0;
+          }
+          #legend-rect{
+            opacity: 0.5;
+          }
+          #legend-rect:hover {
+            opacity: 1;
+
+          }
+          .row{
+            padding-left: 4.5em;
+            padding-right: 4.5em;
+            padding-bottom: 2em;
+          }
+          .panel-body{
+            color: #000000;
+          }
+          img.error{
+            width:100%;
+            padding-bottom:5%;
+          }
+
+        p{
+            text-align:justify;
+            font-size:1.2em; 
+            padding-bottom:5%;  
+        }
+        #d1{
+            color: #FFFFFF;
+        }
+        .intro-text{
+            margin:5%;
+            padding:5%;
+        }
+        .panel-primary{
+            box-shadow:20px 20px 8px #000000,10px 10px 10px #191919,20px 20px 18px #333333;
+            
+
+        }
+        .jumbotron{
+            box-shadow:15px 15px 5px #000000,15px 15px 10px #191919,25px 25px 18px #333333;
+            border-radius:50%;
+        }
+        #cleaning{
+            background: url(./img/b2.jpg) no-repeat bottom center scroll;
+            -webkit-background-size: cover;
+            -moz-background-size: cover;
+            background-size: cover;
+            -o-background-size: cover;
+            margin-bottom: 200px;
+            margin-top:200px;
+        }
+        .row{
+            padding:50px;
+        }
+        #v1{
+            background: url(./img/b3.jpg) no-repeat bottom center scroll;
+            -webkit-background-size: cover;
+            -moz-background-size: cover;
+            background-size: cover;
+            -o-background-size: cover;
+            /*margin-bottom:150px;*/
+        }
+        #v2{
+            background: url(./img/b3.jpg) no-repeat bottom center scroll;
+            -webkit-background-size: cover;
+            -moz-background-size: cover;
+            background-size: cover;
+            -o-background-size: cover;
+        }
+    </style>
+</head>
+
+<body id="page-top" data-spy="scroll" data-target=".navbar-fixed-top">
+
+    <!-- Navigation -->
+        <nav class="navbar navbar-custom navbar-fixed-top" role="navigation">
+            <div class="container">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-main-collapse">
+                        <i class="fa fa-bars"></i>
+                    </button>
+                    <a class="navbar-brand page-scroll" href="#page-top">
+                        <i class="fa fa-play-circle"></i>  <span class="light">COMP6214</span>
+                    </a>
+                </div>
+
+                <!-- Collect the nav links, forms, and other content for toggling -->
+                <div class="collapse navbar-collapse navbar-right navbar-main-collapse">
+                    <ul class="nav navbar-nav">
+                        <!-- Hidden li included to remove active class from about link when scrolled up past about section -->
+                        <li class="hidden">
+                            <a href="#page-top"></a>
+                        </li>
+                        <li>
+                            <a class="page-scroll" href="#cleaning">Data Cleaning</a>
+                        </li>
+                        <li>
+                            <a class="page-scroll" href="#v1">Data Visualizaiton 1</a>
+                        </li>
+                        <li>
+                            <a class="page-scroll" href="#v2">Visualization 2</a>
+                        </li>
+                    </ul>
+                </div>
+                <!-- /.navbar-collapse -->
+            </div>
+            <!-- /.container -->
+        </nav>
+
+        <!-- Intro Header -->
+        <header class="intro">
+            <div class="intro-body">
+                <div class="container">
+                    <h1>Open Data Innovation</h1>
+
+                    <p class="intro-text">The webpage shows the main contentof the assignment including the Data Cleaning and two Data Visualization regarding different aspects.</p>
+
+                    <a href="#cleaning" class="btn btn-circle page-scroll">
+                        <i class="fa fa-angle-double-down animated"></i>
+                    </a>
+                </div>
+            </div>
+        </header>
+
+<!-- About Section -->
+        <section id="cleaning">
+        <div  class="container content-section text-center">
+            <div class="row">
+                    <h2>Data Cleaning</h2>
+    				<!-- ---------------------------1st error  ---------------------------->
+                    <div class="panel panel-primary">
+    	                <div class="panel-heading">Data Validation</div>
+    					<div class="panel-body">
+    						<div class="col-xs-6">
+                                <img class="error" src="./img/fig7.png"></img>
+                                <p>The mixed data format of date like the first picture image shows. The main format of expressing the date in the form is "dd/mm/yyyy" but in the selection area is "yyyy-mm-dd". </p>
+                                
+                            </div>
+                            <div class="col-xs-6">
+                                <img class="error" src="./img/fig8.png"></img>
+                                <p>This mix use of different formats could be modified with the automatic transform with the cells in the certain column like the picture illustrated with the function "to date". It will automatically format the date into a united layout</p>
+                            </div>
+
+    					</div>
+                    </div>
+                    <!-- ---------------------------1st error  ---------------------------->
+                    
+                    <!-- ---------------------------2st error  ---------------------------->
+    				<div class="panel panel-primary">
+    					<div class="panel-heading">Multiple Representations</div>
+    					<div class="panel-body">
+                           <div class="col-xs-6">
+                                <img class="error" src="./img/fig1.png"></img>
+                                <p>There are multiple ways of presenting the same department like the picture shows in the red rectangle which the department of agriculture is stored differently. The issue would simply cause the redundant of data.</p>
+                                
+                            </div>
+                            <div class="col-xs-6">
+                                <img class="error" src="./img/fig4.png"></img>
+                                <p>In Google Refine it is easy to modify the multiple representations with the cluster. In the image here, it could be seen that with certain method and distance function, the redundant representations could be eliminated automatically.</p>
+                            </div>
+    					</div>
+    				</div>
+    				<!-- ---------------------------2st error  ---------------------------->
+    				
+    				<!-- ---------------------------3st error  ---------------------------->
+    				<div class="panel panel-primary">
+    					<div class="panel-heading">Summation Records</div>
+    					<div class="panel-body">
+                            <div class="col-xs-6">
+                                <img width="100%" src="./img/fig3.png"></img>
+                            </div>
+                            <div class="col-xs-6">
+                                <p>The summation Errors are normal for redundant data presentation that each key term would be sum to a total like the picture showed. This "Total" line would easily cause the diffculty visualizing the main data as well as the information presentation.</p>
+                                <p>The summaiton records are all deleted for a better vision while processing the data as well as presenting them.</p>
+                            </div>
+    					</div>
+    				</div>
+    				<!-- ---------------------------3st error  ---------------------------->
+    				<!-- ---------------------------4st error  ---------------------------->
+    				<div class="panel panel-primary">
+    					<div class="panel-heading">Mixed use of numerical scales</div>
+    					<div class="panel-body">
+                            <div class="col-xs-6">
+                                <img width="100%" src="./img/fig5.png"></img>
+                            </div>
+                            <div class="col-xs-6">
+                                <p>The unit of each numerical terms could be mistaken as in the picture states. The number in the red rectangle clearly illustrates that the units between the numbers belong to each line are different: "8127" and "8.127". It could be difficult for data analysts to identify which exact numerical experession is not correct consider its' unit and cause certain illusion.</p>
+                                <p>In order to make sure that no extra data errors are to be produced as to modify  certain numerical scales without knowing the actual value. The way of correcting this was to delete the row contains such mix use of numerical errors</p>
+                            </div>
+    					</div>
+    				</div>
+    				<!-- ---------------------------4st error  ---------------------------->
+    				<!-- ---------------------------5st error  ---------------------------->
+    				<div class="panel panel-primary">
+    					<div class="panel-heading">Spelling Errors</div>
+    					<div class="panel-body">
+                            <div class="col-xs-6">
+                                <img width="100%" src="./img/fig2.png"></img>
+                            </div>
+                            <div class="col-xs-6">
+                                <p>This is another form of the mistaken record of data as it should be "Agriculture" but with an apparent spelling error as the figure shows. Again, the inconvenience of analyse and collect data to real and useful information could be contributed with this input mistake.</p>
+                            </div>
+    					</div>
+    				</div>
+    				<!-- ---------------------------5st error  ---------------------------->
+    				<!-- ---------------------------6st error  ---------------------------->
+    				<div class="panel panel-primary">
+    					<div class="panel-heading">Wrong lines</div>
+    					<div class="panel-body">
+                            <div class="col-xs-6">
+        						<img width="100%" src="./img/wrong_lines.png"></img>
+                            </div>
+                            <div class="col-xs-6">
+                                <p>It is clear as the figure presented that the data records were shifted to right by certain columns which makes the data incorrectly and meaningless. Excel provides the easiest way of moving the columns to where it belongs to match the titles.</p>
+                            </div>
+    					</div>
+    				</div>
+    				<!-- ---------------------------6st error  ---------------------------->
+                    <div class="panel panel-primary">
+                        <div class="panel-heading">Data Manipulation Example</div>
+                        <div class="panel-body">
+                            <div class="col-xs-6">
+                                <img width="100%" src="./img/fig9.png"></img>
+                                <p>The simple way of checking the errors of numerical data is shown in the picture with the automatic numerical facet.</p>
+                                
+                            </div>
+                            <div class="col-xs-6">
+                                <img width="100%" src="./img/fig10.png"></img>
+                                <p>The numerical data contains the nonnumerical elements like the picture shows: "($m)".</p>
+                            </div>
+                            <div class="col-xs-6">
+                                <img width="100%" src="./img/fig11.png"></img>
+                                <p>Replacement of "($m)" is shown as the picture here.</p>
+                                
+                            </div>
+                            <div class="col-xs-6">
+                                <img width="100%" src="./img/fig12.png"></img>
+                                <p>The distribution of data checking could be manipulated with "value.log()".</p>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            </div>
+        </section>
+
+        <!-- Download Section -->
+        <section id="v1">
+            <div class="container content-section text-center">
+                <div class="row">
+                    <div class="jumbotron">
+                        <div id="j1">
+                        <h2 id="visual">Visualization 1</h2>
+                        <!-- <svg style='height:700px;width:1000px'> </svg> -->
+                        <div class="page">
+                            <h4>Description</h4>
+                            <p>This single Line group was designed for observing the “LifeCycle Cost” of each Department through the year. So that the trend as well as the certain detailed "LifeCycle Cost" could be presented with hover.</p>
+                            <h4>Visualization</h4>
+                            <p>Click on each radio button representing each different Department, the single line describes this corresponding "LifeCycle Cost" of this Department would be the only one left.</p>
+                            <p>The “LIfeCycle Cost” of each Department could be clearly presented and analysed regarding the increasing or decreasing trend. In this case, the target user would be those who care about the actual cost of different Departments throughout each year in order to understand the basic trend as well as the situations across the time.</p>
+                        </div>
+                        <script src="./js/v1.js">
+                        </script>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- Contact Section -->
+        <section id="v2">
+            <div class="container content-section text-center">
+                <div class="row">
+                    <div class="jumbotron" >
+                        <h2 id="visual">Visualizaiton 2</h2>
+                        <div class="page">
+                            <h4>Description</h4>
+                            <p>In the first part of this graph the “LifeCycle  Cost” of each Department was displayed in bar chart. While correspondingly the second part of this graph, the Scatter chart would have certain interactions according to the “year” selected from the Bar chart. The Scatter Chart presents the comparison between "Planned Cost" and the "Actual Cost" of each project under certain Department. </p>
+                           
+                            <h4>Visualization</h4>
+                            <p> The interactions between the legend in the middle and both of the Scatter chart, and Bar chart are syncronized in order to display a different perspective according to the Department selected. By Clicking on each small rectangle both parts of the graph interactes, while clicking on the presented bar, the "scatters" would show the balance specificly in the Department in the year chosen. In this case, the user would be more concentrated on concerning the balance between planned cost and actual/project cost in order to observer which exact project under the specific Department exceeded the budget significantly compared with what was planned correspondingly with the year selected from the Bar chart.</p>
+                        </div>
+                        <div id="j3"></div>              
+                        <div id="j4"></div>
+                    </div>
+                </div>
+            </div>
+
+            
+            <script src="./js/v01.js"></script>        
+        </section>
+    
+    <!-- Footer -->
+    <footer>
+        <div class="container text-center">
+            <p>Copyright &copy; Bingjie Gao 2014</p>
+        </div>
+    </footer>
+
+    <!-- jQuery -->
+    <!-- <script src="./js/d1.js"></script> -->
+    <script src="js/jquery.js"></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="js/bootstrap.min.js"></script>
+
+    <!-- Plugin JavaScript -->
+    <script src="js/jquery.easing.min.js"></script>
+
+
+
+    <!-- Custom Theme JavaScript -->
+    <script src="js/grayscale.js"></script>
+
+</body>
+
+</html>
